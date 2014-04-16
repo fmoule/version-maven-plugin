@@ -1,0 +1,9 @@
+
+## Fichiers de compilation
+target/
+
+## Fichiers d'Intellij
+.idea/
+*.ipr
+*.iml
+*.iws
