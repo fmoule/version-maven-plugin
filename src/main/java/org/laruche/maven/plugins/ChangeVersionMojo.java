@@ -3,21 +3,19 @@ package org.laruche.maven.plugins;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
  * Mojo permettant de gérer les numéros de version des différents modules. <br />
  *
- * @goal change-version
  * @author Frédéric Moulé
  */
-@SuppressWarnings("JavaDoc")
+@Mojo(name = "change-version")
 public class ChangeVersionMojo extends AbstractMojo {
 
-    /**
-     * @parameter default-value="${project}"
-     * @required
-     */
+    @Parameter(defaultValue = "${project}")
     private MavenProject project;
 
 
