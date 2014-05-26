@@ -5,10 +5,8 @@
     <!-- ///// Infos du projet ///// -->
     <groupId>org.laruche.maven.plugins</groupId>
     <artifactId>version-maven-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>version-maven-plugin Maven Mojo</name>
-    <url>http://maven.apache.org</url>
+    <packaging>maven-plugin</packaging>
 
     <properties>
         <maven.version>3.0.4</maven.version>
@@ -16,8 +14,10 @@
 
     <!-- ///// Options ///// -->
     <build>
-        <plugins>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
 
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -29,14 +29,17 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.3</version>
                 <configuration>
                     <goalPrefix>version</goalPrefix>
+                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>mojo-descriptor</id>
+                        <id>compile-descriptor</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>descriptor</goal>
                         </goals>
@@ -50,12 +53,21 @@
     <!-- ///// Liste des Dépendances ///// -->
     <dependencies>
 
+        <!-- Librairies générales -->
+
         <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-project</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <!-- Librairies Maven-->
 
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -81,7 +93,7 @@
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.2</version>
+            <version>3.0</version>
             <scope>provided</scope>
         </dependency>
 

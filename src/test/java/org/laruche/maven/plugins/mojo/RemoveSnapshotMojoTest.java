@@ -1,4 +1,4 @@
-package org.laruche.maven.plugins;
+package org.laruche.maven.plugins.mojo;
 
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ChangeVersionMojoTest {
+public class RemoveSnapshotMojoTest {
 
     private static MavenProject mockProject(final String version) {
         final MavenProject project = mock(MavenProject.class);
