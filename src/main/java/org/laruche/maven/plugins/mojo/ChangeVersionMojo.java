@@ -1,4 +1,4 @@
-package org.laruche.maven.plugins;
+package org.laruche.maven.plugins.mojo;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
