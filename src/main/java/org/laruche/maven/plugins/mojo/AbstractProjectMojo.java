@@ -98,7 +98,7 @@ public abstract class AbstractProjectMojo extends AbstractMojo {
         return project;
     }
 
-    protected void setProject(final MavenProject project) {
+    public void setProject(final MavenProject project) {
         this.project = project;
     }
 }
