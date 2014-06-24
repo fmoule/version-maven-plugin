@@ -1,24 +1,48 @@
 package org.laruche.maven.plugins.mojo;
 
 import org.apache.maven.project.MavenProject;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
+import static org.apache.commons.io.FileUtils.deleteQuietly;
+import static org.apache.commons.io.FileUtils.readLines;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class RemoveSnapshotMojoTest {
+public class RemoveSnapshotMojoTest extends AbstractMojoTest {
+    private static final String BASE_PATH = RemoveSnapshotMojoTest.class.getResource(".").getPath();
+    private final RemoveSnapshotMojo mojo = new RemoveSnapshotMojo();
+    private File pomFile;
 
-    private static MavenProject mockProject(final String version) {
-        final MavenProject project = mock(MavenProject.class);
-        when(project.getVersion()).thenReturn(version);
-        return project;
+    @Before
+    public void setUp() throws Exception {
+        pomFile = new File(BASE_PATH + "pom.xml");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (pomFile != null && pomFile.exists()) {
+            deleteQuietly(pomFile);
+        }
     }
 
     @Test
-    public void test_snapshotVersion() {
-        final MavenProject mavenProject = mockProject("1.1-SNAPSHOT");
-        assertThat(mavenProject.getVersion(), equalTo("1.1-SNAPSHOT"));
+    public void test_execute() throws Exception {
+        final MavenProject mavenProject = mockProject("projet-test", "1.1-SNAPSHOT", pomFile, false);
+        mojo.setProject(mavenProject);
+        mojo.execute();
+        assertThat(containsLine(readLines(pomFile), "<version>1.1</version>"), equalTo(true));
+    }
+
+
+    @Test
+    public void test_execute_noSuffix() throws Exception {
+        final MavenProject mavenProject = mockProject("projet-test", "1.1", pomFile, false);
+        mojo.setProject(mavenProject);
+        mojo.execute();
+        assertThat(containsLine(readLines(pomFile), "<version>1.1</version>"), equalTo(true));
     }
 }

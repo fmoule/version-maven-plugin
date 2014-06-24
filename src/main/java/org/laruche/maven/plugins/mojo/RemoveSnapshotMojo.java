@@ -12,21 +12,25 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  */
 @Mojo(name = "change-version")
 public class RemoveSnapshotMojo extends AbstractProjectMojo {
+    protected static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 
-	@Override
-	protected void modifyPom(final Model projectModel, final Object... parameters) {
-		final String oldVersion = parameters[0].toString();
-		final String newVersion = convertVersion(oldVersion);
-		if (!isEmpty(projectModel.getVersion())) {
-			projectModel.setVersion(newVersion);
-		}
-		if (projectModel.getParent() != null) {
-			projectModel.getParent().setVersion(newVersion);
-		}
-	}
+    @Override
+    protected void modifyPom(final Model projectModel, final Object... parameters) {
+        final String oldVersion = parameters[0].toString();
+        final String newVersion = convertVersion(oldVersion);
+        if (!isEmpty(projectModel.getVersion())) {
+            projectModel.setVersion(newVersion);
+        }
+        if (projectModel.getParent() != null) {
+            projectModel.getParent().setVersion(newVersion);
+        }
+    }
 
-	protected String convertVersion(final String oldVersion) {
-		return null;
-	}
+    protected String convertVersion(final String oldVersion) {
+        if (isEmpty(oldVersion)) {
+            return oldVersion;
+        }
+        return oldVersion.replace(SNAPSHOT_SUFFIX, "");
+    }
 
 }
