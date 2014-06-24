@@ -10,7 +10,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  *
  * @author Frédéric Moulé
  */
-@Mojo(name = "change-version")
+@Mojo(name = "remove-snapshot")
 public class RemoveSnapshotMojo extends AbstractProjectMojo {
     protected static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 
