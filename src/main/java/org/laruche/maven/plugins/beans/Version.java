@@ -14,6 +14,10 @@ public class Version implements Iterable<VersionToken> {
     private static final String SEPARATORS = ".-";
     private List<VersionToken> tokens = new ArrayList<VersionToken>();
 
+    public Version() {
+        // EMPTY
+    }
+
     public Version(final String oldVersion) {
         final StringTokenizer tokenizer = new StringTokenizer(oldVersion, SEPARATORS, true);
         int cursor = 0;
@@ -34,6 +38,27 @@ public class Version implements Iterable<VersionToken> {
         }
     }
 
+    public void addVersionToken(final VersionToken versionToken) {
+        tokens.add(versionToken);
+    }
+
+    @Override
+    public int hashCode() {
+        return tokens.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        final Version that = (Version) obj;
+        return tokens.equals(that.tokens);
+    }
+
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
@@ -48,7 +73,6 @@ public class Version implements Iterable<VersionToken> {
         return buffer.toString();
     }
 
-
     @Override
     public Iterator<VersionToken> iterator() {
         return tokens.iterator();
@@ -56,5 +80,13 @@ public class Version implements Iterable<VersionToken> {
 
     public List<VersionToken> getVersionTokens() {
         return new ArrayList<VersionToken>(tokens);
+    }
+
+    public VersionToken getVersionToken(final int index) {
+        return tokens.get(index);
+    }
+
+    public void setVersionToken(final int index, final VersionToken token) {
+        this.tokens.set(index, token);
     }
 }

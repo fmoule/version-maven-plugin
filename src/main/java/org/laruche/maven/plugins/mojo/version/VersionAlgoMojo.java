@@ -1,12 +1,11 @@
 package org.laruche.maven.plugins.mojo.version;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.laruche.maven.plugins.beans.Version;
-import org.laruche.maven.plugins.beans.algo.VersionAlgorithm;
+import org.laruche.maven.plugins.beans.algo.factory.AlgoConvert;
+import org.laruche.maven.plugins.beans.algo.factory.DefaultAlgoConverter;
 import org.laruche.maven.plugins.mojo.AbstractProjectMojo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -17,10 +16,19 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  * @author Frédéric Moulé
  */
 public class VersionAlgoMojo extends AbstractProjectMojo {
-    private final List<VersionAlgorithm> algorithms = new ArrayList<VersionAlgorithm>();
+    private AlgoConvert factory = new DefaultAlgoConverter();
+
+    @Parameter(property = "algo", readonly = false, required = true)
+    private String command;
+
+    @Parameter(property = "limit", readonly = false, defaultValue = "10")
+    private String limit;
 
     @Override
     protected void modifyPom(final Model projectModel, final Object... parameters) throws Exception {
+        if (isEmpty(limit)) {
+            throw new Exception("La limite des numéros est nul !!");
+        }
         if (parameters == null || parameters.length == 0) {
             return;
         }
@@ -32,15 +40,20 @@ public class VersionAlgoMojo extends AbstractProjectMojo {
         } else {
             oldVersion = "";
         }
-        Version newVersion = new Version(oldVersion);
-        for (VersionAlgorithm algorithm : algorithms) {
-            newVersion = algorithm.compute(newVersion);
+        final Version newVersion = factory.createAlgorithme(command).compute(new Version(oldVersion));
+        if (!isEmpty(projectModel.getVersion())) {
+            projectModel.setVersion(newVersion.toString());
         }
-
+        if (projectModel.getParent() != null) {
+            projectModel.getParent().setVersion(newVersion.toString());
+        }
     }
 
-    public void setAlgos(final List<? extends VersionAlgorithm> newAlgorithms) {
-        algorithms.clear();
-        algorithms.addAll(newAlgorithms);
+    public void setCommand(final String command) {
+        this.command = command;
+    }
+
+    public void setLimit(final String limit) {
+        this.limit = limit;
     }
 }

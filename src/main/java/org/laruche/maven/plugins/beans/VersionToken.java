@@ -1,5 +1,7 @@
 package org.laruche.maven.plugins.beans;
 
+import static org.apache.commons.lang.StringUtils.isNumeric;
+
 public class VersionToken {
     private String value;
     private String separator;
@@ -29,6 +31,15 @@ public class VersionToken {
         int hascode = (value == null ? 0 : value.hashCode());
         hascode = (prime * hascode) + (separator == null ? 0 : separator.hashCode());
         return hascode;
+    }
+
+    public VersionToken iterate() {
+        final String tokenValue = getValue();
+        if (!isNumeric(tokenValue)) {
+            return this;
+        } else {
+            return new VersionToken(getSeparator(), Integer.toString(Integer.valueOf(tokenValue) + 1));
+        }
     }
 
     public String getSeparator() {

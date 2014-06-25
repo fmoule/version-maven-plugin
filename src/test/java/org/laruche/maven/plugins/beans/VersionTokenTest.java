@@ -16,4 +16,13 @@ public class VersionTokenTest {
         assertThat(new VersionToken("-", "12").hashCode(), equalTo(new VersionToken("-", "12").hashCode()));
     }
 
+
+    @Test
+    public void test_iterate() {
+        VersionToken token = new VersionToken(".", "5");
+        assertThat(token.iterate(), equalTo(new VersionToken(".", "6")));
+        token = new VersionToken(".", "value");
+        assertThat(token.iterate(), equalTo(new VersionToken(".", "value")));
+    }
+
 }
