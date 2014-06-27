@@ -36,6 +36,7 @@ public abstract class AbstractProjectMojo extends AbstractMojo {
             writeModelToPom(projectModel);
         } catch (final Exception exception) {
             rollBack(pomFile);
+            this.getLog().error("=== ERREUR : " + exception.getMessage());
             throw new MojoFailureException(exception.getMessage(), exception);
         } finally {
             deleteQuietly(copiedPomFile);
@@ -98,7 +99,7 @@ public abstract class AbstractProjectMojo extends AbstractMojo {
         return project;
     }
 
-    protected void setProject(final MavenProject project) {
+    public void setProject(final MavenProject project) {
         this.project = project;
     }
 }

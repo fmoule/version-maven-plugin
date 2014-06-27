@@ -1,9 +1,11 @@
-package org.laruche.maven.plugins.mojo;
+package org.laruche.maven.plugins.mojo.suffix;
 
 import org.apache.maven.project.MavenProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.laruche.maven.plugins.mojo.AbstractMojoTest;
+import org.laruche.maven.plugins.mojo.suffix.RemoveSnapshotMojo;
 
 import java.io.File;
 
