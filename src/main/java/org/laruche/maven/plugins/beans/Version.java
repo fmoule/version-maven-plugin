@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 /**
  * Classe représentant la version d'un projet <br />
  *
@@ -38,13 +40,35 @@ public class Version implements Iterable<VersionToken> {
         }
     }
 
+    // Contructeur de copie
+    public Version(final Version oldVersion) {
+        if (oldVersion == null) {
+            return;
+        }
+        tokens.addAll(oldVersion.getVersionTokens());
+    }
+
     public void addVersionToken(final VersionToken versionToken) {
         tokens.add(versionToken);
     }
 
+    public Version removeToken(final VersionToken snapshot) {
+        final Version newVersion = new Version();
+        for (VersionToken token : tokens) {
+            if (!snapshot.equals(token)) {
+                newVersion.addVersionToken(token);
+            }
+        }
+        return newVersion;
+    }
+
     @Override
-    public int hashCode() {
-        return tokens.hashCode();
+    public Iterator<VersionToken> iterator() {
+        return tokens.iterator();
+    }
+
+    public boolean containsString(final String suffix) {
+        return (!isEmpty(this.toString()) && this.toString().contains(suffix));
     }
 
     @Override
@@ -60,6 +84,11 @@ public class Version implements Iterable<VersionToken> {
     }
 
     @Override
+    public int hashCode() {
+        return tokens.hashCode();
+    }
+
+    @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
         VersionToken token;
@@ -71,11 +100,6 @@ public class Version implements Iterable<VersionToken> {
             buffer.append(token.getValue());
         }
         return buffer.toString();
-    }
-
-    @Override
-    public Iterator<VersionToken> iterator() {
-        return tokens.iterator();
     }
 
     public List<VersionToken> getVersionTokens() {

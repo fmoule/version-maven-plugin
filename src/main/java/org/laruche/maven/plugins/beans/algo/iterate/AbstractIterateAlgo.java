@@ -3,10 +3,10 @@ package org.laruche.maven.plugins.beans.algo.iterate;
 import org.apache.commons.lang.StringUtils;
 import org.laruche.maven.plugins.beans.Version;
 import org.laruche.maven.plugins.beans.VersionToken;
-import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithme;
+import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithm;
 
 
-abstract class AbstractIterateAlgo extends AbstractVersionAlgorithme {
+abstract class AbstractIterateAlgo extends AbstractVersionAlgorithm {
     protected int index;
 
     public AbstractIterateAlgo(final String label, int index) {

@@ -1,9 +1,9 @@
 package org.laruche.maven.plugins.beans.algo;
 
-public abstract class AbstractVersionAlgorithme implements VersionAlgorithm {
+public abstract class AbstractVersionAlgorithm implements VersionAlgorithm {
     private String label;
 
-    protected AbstractVersionAlgorithme(final String label) {
+    protected AbstractVersionAlgorithm(final String label) {
         this.label = label;
     }
 
@@ -22,10 +22,10 @@ public abstract class AbstractVersionAlgorithme implements VersionAlgorithm {
         if (obj == this) {
             return true;
         }
-        if (obj == null || !(obj instanceof AbstractVersionAlgorithme)) {
+        if (obj == null || !(obj instanceof AbstractVersionAlgorithm)) {
             return false;
         }
-        final AbstractVersionAlgorithme that = (AbstractVersionAlgorithme) obj;
+        final AbstractVersionAlgorithm that = (AbstractVersionAlgorithm) obj;
         return (label == null ? that.label == null : label.equals(that.label));
     }
 }

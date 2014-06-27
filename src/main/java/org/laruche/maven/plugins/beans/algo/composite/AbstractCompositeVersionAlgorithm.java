@@ -1,12 +1,12 @@
 package org.laruche.maven.plugins.beans.algo.composite;
 
-import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithme;
+import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithm;
 import org.laruche.maven.plugins.beans.algo.VersionAlgorithm;
 
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class AbstractCompositeVersionAlgorithm extends AbstractVersionAlgorithme implements CompositeVersionAlgorithm {
+abstract class AbstractCompositeVersionAlgorithm extends AbstractVersionAlgorithm implements CompositeVersionAlgorithm {
     protected final List<VersionAlgorithm> algorithms = new ArrayList<VersionAlgorithm>();
 
     public AbstractCompositeVersionAlgorithm(final String label) {

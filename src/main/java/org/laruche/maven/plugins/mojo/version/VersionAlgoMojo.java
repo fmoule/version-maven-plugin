@@ -43,6 +43,7 @@ public class VersionAlgoMojo extends AbstractProjectMojo {
             oldVersion = "";
         }
         final Version newVersion = factory.createAlgorithme(command).compute(new Version(oldVersion));
+        this.getLog().info("Changement de version " + oldVersion + " => " + newVersion);
         if (!isEmpty(projectModel.getVersion())) {
             projectModel.setVersion(newVersion.toString());
         }

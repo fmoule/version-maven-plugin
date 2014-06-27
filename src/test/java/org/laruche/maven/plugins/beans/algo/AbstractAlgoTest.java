@@ -10,7 +10,7 @@ public class AbstractAlgoTest {
 
     ////// Classes Internes ///////
 
-    protected static class TestAlgo extends AbstractVersionAlgorithme {
+    protected static class TestAlgo extends AbstractVersionAlgorithm {
         private final int index;
 
         public TestAlgo(final int index) {

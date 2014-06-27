@@ -8,6 +8,8 @@ import org.laruche.maven.plugins.beans.algo.composite.OrAlgo;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateIterNumAlgo;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateMajorNumAlgo;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateMinorNumAlgo;
+import org.laruche.maven.plugins.beans.algo.others.AddingSuffixAlgorithm;
+import org.laruche.maven.plugins.beans.algo.others.RemovingSuffixAlgorithm;
 
 import java.util.*;
 
@@ -27,6 +29,8 @@ public class DefaultAlgoConverter implements AlgoConvert {
         dicoAlgorithms.put("major", new IterateMajorNumAlgo());
         dicoAlgorithms.put("minor", new IterateMinorNumAlgo());
         dicoAlgorithms.put("iter", new IterateIterNumAlgo());
+        dicoAlgorithms.put("add-snapshot", new AddingSuffixAlgorithm());
+        dicoAlgorithms.put("remove-snapshot", new RemovingSuffixAlgorithm());
     }
 
     @Override
@@ -52,7 +56,7 @@ public class DefaultAlgoConverter implements AlgoConvert {
             } else if (")".equals(token)) {
                 nodes.remove(currentNode);
                 currentNode = nodes.get(nodes.size() - 1);
-            } else if ("&".equals(token)) {
+            } else if ("&".equals(token) || "&&".equals(token)) {
                 currentNode.setType(LogicalType.AND);
             } else if ("||".equals(token)) {
                 currentNode.setType(LogicalType.OR);

@@ -36,6 +36,7 @@ public abstract class AbstractProjectMojo extends AbstractMojo {
             writeModelToPom(projectModel);
         } catch (final Exception exception) {
             rollBack(pomFile);
+            this.getLog().error("=== ERREUR : " + exception.getMessage());
             throw new MojoFailureException(exception.getMessage(), exception);
         } finally {
             deleteQuietly(copiedPomFile);

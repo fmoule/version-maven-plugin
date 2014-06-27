@@ -3,7 +3,7 @@ package org.laruche.maven.plugins.mojo;
 import org.apache.maven.project.MavenProject;
 import org.laruche.maven.plugins.beans.Version;
 import org.laruche.maven.plugins.beans.VersionToken;
-import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithme;
+import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithm;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class AbstractMojoTest {
 
     ////// Classes Internes //////
 
-    protected static class TestAlgo extends AbstractVersionAlgorithme {
+    protected static class TestAlgo extends AbstractVersionAlgorithm {
         private final int index;
 
         protected TestAlgo(final int index) {
