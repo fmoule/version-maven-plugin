@@ -15,7 +15,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class AbstractProjectMojoTest extends AbstractMojoTest {
+public final class AbstractProjectMojoTest extends AbstractMojoTest {
     public static final String BASE_PATH = AbstractProjectMojo.class.getResource(".").getPath();
     private TestMojo mojo = new TestMojo();
     private File pomFile;

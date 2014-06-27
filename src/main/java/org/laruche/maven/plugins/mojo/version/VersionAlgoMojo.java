@@ -1,6 +1,7 @@
 package org.laruche.maven.plugins.mojo.version;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.laruche.maven.plugins.beans.Version;
 import org.laruche.maven.plugins.beans.algo.factory.AlgoConvert;
@@ -15,6 +16,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  *
  * @author Frédéric Moulé
  */
+@Mojo(name = "compute-version")
 public class VersionAlgoMojo extends AbstractProjectMojo {
     private AlgoConvert factory = new DefaultAlgoConverter();
 
