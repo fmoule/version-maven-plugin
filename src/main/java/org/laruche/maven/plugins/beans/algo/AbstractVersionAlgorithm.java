@@ -28,4 +28,9 @@ public abstract class AbstractVersionAlgorithm implements VersionAlgorithm {
         final AbstractVersionAlgorithm that = (AbstractVersionAlgorithm) obj;
         return (label == null ? that.label == null : label.equals(that.label));
     }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 }
