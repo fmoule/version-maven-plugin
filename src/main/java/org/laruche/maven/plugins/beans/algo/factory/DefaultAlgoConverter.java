@@ -13,6 +13,7 @@ import org.laruche.maven.plugins.beans.algo.others.RemovingSuffixAlgorithm;
 
 import java.util.*;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
@@ -40,18 +41,18 @@ public class DefaultAlgoConverter implements AlgoConvert {
         }
         final StringTokenizer tokenizer = new StringTokenizer(explodeLine(line), BLANK_SPACE);
         final List<AlgoNode> nodes = new ArrayList<AlgoNode>();
-        AlgoNode currentNode = new AlgoNode();
-        String token;
+        AlgoNode currentNode = new AlgoNode(new AndAlgo());
         nodes.add(currentNode);
+        String token;
         while (tokenizer.hasMoreTokens()) {
             token = tokenizer.nextToken().trim();
             if (isEmpty(token)) {
                 continue;
             }
             if ("(".equals(token)) {
-                CompositeVersionAlgorithm newAlgo = new AndAlgo();
-                currentNode.addChild(newAlgo);
-                currentNode = new AlgoNode(newAlgo);
+                final AlgoNode childNode = new AlgoNode(new AndAlgo());
+                currentNode.addChild(childNode);
+                currentNode = childNode;
                 nodes.add(currentNode);
             } else if (")".equals(token)) {
                 nodes.remove(currentNode);
@@ -61,12 +62,12 @@ public class DefaultAlgoConverter implements AlgoConvert {
             } else if ("||".equals(token)) {
                 currentNode.setType(LogicalType.OR);
             } else if (dicoAlgorithms.containsKey(token)) {
-                currentNode.addChild(dicoAlgorithms.get(token));
+                currentNode.addChild(new AlgoNode(dicoAlgorithms.get(token)));
             } else {
                 throw new IllegalArgumentException("Pas d'algorithme correspondant au label : " + token);
             }
         }
-        return nodes.get(0).getVersionAlgorithm();
+        return nodes.get(0).computeAlgorithm();
     }
 
     private static String explodeLine(final String line) {
@@ -78,38 +79,36 @@ public class DefaultAlgoConverter implements AlgoConvert {
     ////// Classes Internes //////
 
     private static class AlgoNode {
-        private CompositeVersionAlgorithm compositeAlgo = new AndAlgo();
-        private LogicalType type = LogicalType.AND;
+        private VersionAlgorithm algorithm = new AndAlgo();
+        private List<AlgoNode> children = new ArrayList<AlgoNode>();
 
-        public AlgoNode() {
-            // EMPTY
+        public AlgoNode(final VersionAlgorithm newAlgo) {
+            algorithm = newAlgo;
         }
 
-        public AlgoNode(final CompositeVersionAlgorithm newAlgo) {
-            compositeAlgo = newAlgo;
-            type = (compositeAlgo instanceof OrAlgo ? LogicalType.OR : LogicalType.AND);
-        }
-
-        public void addChild(final VersionAlgorithm algo) {
-            compositeAlgo.addAlgo(algo);
+        public void addChild(final AlgoNode childNode) {
+            children.add(childNode);
         }
 
         public void setType(final LogicalType type) {
-            if (this.type == type) {
-                return;
-            }
             CompositeVersionAlgorithm newAlgo;
             if (LogicalType.OR == type) {
                 newAlgo = new OrAlgo();
             } else {
                 newAlgo = new AndAlgo();
             }
-            newAlgo.addAlgos(compositeAlgo.getAlgorithms());
-            this.compositeAlgo = newAlgo;
+            this.algorithm = newAlgo;
         }
 
-        public VersionAlgorithm getVersionAlgorithm() {
-            return compositeAlgo;
+        public VersionAlgorithm computeAlgorithm() {
+            if (!(algorithm instanceof CompositeVersionAlgorithm)) {
+                return algorithm;
+            }
+            final CompositeVersionAlgorithm compositeAlgorithm = (CompositeVersionAlgorithm) algorithm;
+            for (AlgoNode child : children) {
+                compositeAlgorithm.addAlgo(child.computeAlgorithm());
+            }
+            return compositeAlgorithm;
         }
     }
 

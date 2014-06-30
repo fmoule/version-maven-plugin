@@ -23,4 +23,5 @@ public class AddingSuffixAlgorithm extends AbstractVersionAlgorithm {
         newVersion.addVersionToken(new VersionToken("-", "SNAPSHOT"));
         return newVersion;
     }
+
 }
