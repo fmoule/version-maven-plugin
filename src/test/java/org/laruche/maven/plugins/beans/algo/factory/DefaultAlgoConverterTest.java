@@ -5,6 +5,7 @@ import org.laruche.maven.plugins.beans.algo.VersionAlgorithm;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateIterNumAlgo;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateMajorNumAlgo;
 import org.laruche.maven.plugins.beans.algo.iterate.IterateMinorNumAlgo;
+import org.laruche.maven.plugins.beans.algo.others.AddingSuffixAlgorithm;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -20,6 +21,14 @@ public class DefaultAlgoConverterTest {
         assertThat(converter.createAlgorithme("minor || iter"), equalTo((VersionAlgorithm) or(new IterateMinorNumAlgo(), new IterateIterNumAlgo())));
         assertThat(converter.createAlgorithme("(major & minor) || iter"),
                 equalTo((VersionAlgorithm) or(and(new IterateMajorNumAlgo(), new IterateMinorNumAlgo()), new IterateIterNumAlgo())));
+    }
+
+
+    @Test
+    public void test_createAlgo_case1() {
+        assertThat(converter.createAlgorithme("minor || iter"), equalTo((VersionAlgorithm) or(new IterateMinorNumAlgo(), new IterateIterNumAlgo())));
+        assertThat(converter.createAlgorithme("major || minor || iter"), equalTo((VersionAlgorithm) or(new IterateMajorNumAlgo(), new IterateMinorNumAlgo(), new IterateIterNumAlgo())));
+        assertThat(converter.createAlgorithme("(major || minor || iter) & add-snapshot"), equalTo((VersionAlgorithm) and(or(new IterateMajorNumAlgo(), new IterateMinorNumAlgo(), new IterateIterNumAlgo()), new AddingSuffixAlgorithm())));
     }
 
 }
