@@ -7,7 +7,7 @@ import static java.lang.Integer.valueOf;
 import static org.apache.commons.lang.StringUtils.isNumeric;
 
 /**
- * Alogorithme permettant d'incrémenter le numéro de version mineur. <br />
+ * Algorithme permettant d'incrémenter le numéro de version mineur. <br />
  *
  * @author Frédéric Moulé
  */
@@ -16,6 +16,11 @@ public class IterateMinorNumAlgo extends AbstractIterateAlgo {
 
     public IterateMinorNumAlgo() {
         super("minor", 1);
+    }
+
+    public IterateMinorNumAlgo(final int limit) {
+        super("minor", 1);
+        this.limit = limit;
     }
 
     @Override
@@ -27,7 +32,7 @@ public class IterateMinorNumAlgo extends AbstractIterateAlgo {
         if (!isNumeric(value)) {
             newVersion.addVersionToken(token);
         } else if (valueOf(value) + 1 == limit) {
-            newVersion.setVersionToken(0, newVersion.getVersionToken(0).iterate());
+            newVersion.setVersionToken(0, newVersion.getVersionToken(0).iterateValue());
             newVersion.addVersionToken(new VersionToken(token.getSeparator(), "0"));
         } else {
             newVersion.addVersionToken(new VersionToken(token.getSeparator(), Integer.toString(valueOf(value) + 1)));

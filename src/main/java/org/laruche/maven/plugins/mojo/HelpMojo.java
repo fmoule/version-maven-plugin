@@ -1,12 +1,12 @@
 package org.laruche.maven.plugins.mojo;
 
-import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "help")
-public class HelpMojo extends AbstractProjectMojo {
+public class HelpMojo extends AbstractModifyVersionMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -19,7 +19,7 @@ public class HelpMojo extends AbstractProjectMojo {
 	}
 
 	@Override
-	protected void modifyPom(final Model projectModel, final Object... parameters) {
+	protected void modifyPom(MavenProject project) {
 		// DO NOTHING !!
 	}
 }

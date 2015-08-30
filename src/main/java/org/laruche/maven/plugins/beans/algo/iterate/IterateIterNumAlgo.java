@@ -18,6 +18,11 @@ public class IterateIterNumAlgo extends AbstractIterateAlgo {
         super("iter", 2);
     }
 
+    public IterateIterNumAlgo(final int digitLimit) {
+        super("iter", 2);
+        this.limit = digitLimit;
+    }
+
     @Override
     protected void iterate(final Version newVersion, final VersionToken token) {
         if (newVersion == null || token == null) {
@@ -27,10 +32,10 @@ public class IterateIterNumAlgo extends AbstractIterateAlgo {
         if (!isNumeric(value)) {
             newVersion.addVersionToken(token);
         } else if (valueOf(value) + 1 == limit) {
-            newVersion.setVersionToken(index - 1, newVersion.getVersionToken(index - 1).iterate());
+            newVersion.setVersionToken(index - 1, newVersion.getVersionToken(index - 1).iterateValue());
             newVersion.addVersionToken(new VersionToken(token.getSeparator(), "0"));
         } else {
-            newVersion.addVersionToken(token.iterate());
+            newVersion.addVersionToken(token.iterateValue());
         }
     }
 

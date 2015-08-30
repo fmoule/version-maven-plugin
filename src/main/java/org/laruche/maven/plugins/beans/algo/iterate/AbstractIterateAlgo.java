@@ -1,9 +1,10 @@
 package org.laruche.maven.plugins.beans.algo.iterate;
 
-import org.apache.commons.lang.StringUtils;
 import org.laruche.maven.plugins.beans.Version;
 import org.laruche.maven.plugins.beans.VersionToken;
 import org.laruche.maven.plugins.beans.algo.AbstractVersionAlgorithm;
+
+import static org.apache.commons.lang.StringUtils.isNumeric;
 
 
 abstract class AbstractIterateAlgo extends AbstractVersionAlgorithm {
@@ -22,7 +23,7 @@ abstract class AbstractIterateAlgo extends AbstractVersionAlgorithm {
         final Version newVersion = new Version();
         int count = 0;
         for (VersionToken token : oldVersion) {
-            if (count == index && StringUtils.isNumeric(token.getValue())) {
+            if (count == index && isNumeric(token.getValue())) {
                 iterate(newVersion, token);
             } else {
                 newVersion.addVersionToken(token);

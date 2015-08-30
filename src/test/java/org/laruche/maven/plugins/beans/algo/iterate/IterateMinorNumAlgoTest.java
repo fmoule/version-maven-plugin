@@ -22,4 +22,11 @@ public class IterateMinorNumAlgoTest {
         assertThat(algo.compute(new Version("2.9.0-SNAPSHOT")), equalTo(new Version("2.10.0-SNAPSHOT")));
         assertThat(algo.compute(new Version("2.99.0-SNAPSHOT")), equalTo(new Version("3.0.0-SNAPSHOT")));
     }
+
+
+    @Test
+    public void test_compute_inLimits() {
+        algo.setLimit(10);
+        assertThat(algo.compute(new Version("1.9.2")), equalTo(new Version("2.0.2")));
+    }
 }

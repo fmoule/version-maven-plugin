@@ -1,7 +1,8 @@
 package org.laruche.maven.plugins.mojo;
 
-import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public final class AbstractProjectMojoTest extends AbstractMojoTest {
-    public static final String BASE_PATH = AbstractProjectMojo.class.getResource(".").getPath();
+public final class AbstractModifyVersionMojoTest extends AbstractMojoTest {
+    public static final String BASE_PATH = AbstractModifyVersionMojo.class.getResource(".").getPath();
     private TestMojo mojo = new TestMojo();
     private File pomFile;
 
@@ -71,7 +72,7 @@ public final class AbstractProjectMojoTest extends AbstractMojoTest {
 
     ///// Classes internes //////
 
-    private static class TestMojo extends AbstractProjectMojo {
+    private static class TestMojo extends AbstractModifyVersionMojo {
         private String newVersion;
         private boolean throwsException = false;
 
@@ -81,18 +82,16 @@ public final class AbstractProjectMojoTest extends AbstractMojoTest {
 
 
         @Override
-        protected void modifyPom(final Model projectModel, final Object... parameters) throws Exception {
+        protected void modifyPom(final MavenProject project) throws Exception {
             if (throwsException) {
                 throw new Exception("Exception : test");
             }
-            if (parameters == null || parameters.length == 0) {
-                return;
+            if (!isEmpty(project.getVersion())) {
+                project.setVersion(newVersion);
             }
-            if (!isEmpty(projectModel.getVersion())) {
-                projectModel.setVersion(newVersion);
-            }
-            if (projectModel.getParent() != null) {
-                projectModel.getParent().setVersion(newVersion);
+            final Parent parentProject = project.getModel().getParent();
+            if (parentProject != null) {
+                parentProject.setVersion(newVersion);
             }
         }
 

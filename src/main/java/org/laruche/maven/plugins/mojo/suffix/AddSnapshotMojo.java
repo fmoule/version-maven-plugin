@@ -2,6 +2,7 @@ package org.laruche.maven.plugins.mojo.suffix;
 
 import org.apache.maven.plugins.annotations.Mojo;
 import org.laruche.maven.plugins.beans.algo.others.AddingSuffixAlgorithm;
+import org.laruche.maven.plugins.mojo.AbstractVersionAlgoMojo;
 
 /**
  * Tache Maven permettant d'ajouter le suffix "snapshot" à la version. <br />
@@ -9,9 +10,9 @@ import org.laruche.maven.plugins.beans.algo.others.AddingSuffixAlgorithm;
  * @author Frédéric Moulé
  */
 @Mojo(name = "add-snapshot")
-public class AddSnapshotMojo extends AbstractSuffixMojo {
+public class AddSnapshotMojo extends AbstractVersionAlgoMojo {
 
-    protected AddSnapshotMojo() {
+    public AddSnapshotMojo() {
         super(new AddingSuffixAlgorithm());
     }
 

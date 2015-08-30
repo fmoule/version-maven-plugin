@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.laruche.maven.plugins.beans.VersionToken.SNAPSHOT_TOKEN;
 
 /**
  * Classe représentant la version d'un projet <br />
@@ -41,26 +42,22 @@ public class Version implements Iterable<VersionToken> {
     }
 
     // Contructeur de copie
-    public Version(final Version oldVersion) {
-        if (oldVersion == null) {
+    public Version(final Version version) {
+        if (version == null) {
             return;
         }
-        tokens.addAll(oldVersion.getVersionTokens());
+        tokens.addAll(version.getVersionTokens());
     }
 
     public void addVersionToken(final VersionToken versionToken) {
         tokens.add(versionToken);
     }
 
-    public Version removeToken(final VersionToken snapshot) {
-        final Version newVersion = new Version();
-        for (VersionToken token : tokens) {
-            if (!snapshot.equals(token)) {
-                newVersion.addVersionToken(token);
-            }
-        }
-        return newVersion;
+    public Version removeToken(final VersionToken theToken) {
+        tokens.remove(theToken);
+        return this;
     }
+
 
     @Override
     public Iterator<VersionToken> iterator() {
@@ -69,6 +66,10 @@ public class Version implements Iterable<VersionToken> {
 
     public boolean containsString(final String suffix) {
         return (!isEmpty(this.toString()) && this.toString().contains(suffix));
+    }
+
+    public boolean isSnapshot() {
+        return tokens.contains(SNAPSHOT_TOKEN);
     }
 
     @Override
@@ -112,5 +113,9 @@ public class Version implements Iterable<VersionToken> {
 
     public void setVersionToken(final int index, final VersionToken token) {
         this.tokens.set(index, token);
+    }
+
+    public int getNbTokens() {
+        return tokens.size();
     }
 }

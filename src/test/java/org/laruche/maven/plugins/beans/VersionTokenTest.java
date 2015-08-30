@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.laruche.maven.plugins.beans.VersionToken.SNAPSHOT_TOKEN;
 
 public class VersionTokenTest {
 
@@ -20,9 +21,16 @@ public class VersionTokenTest {
     @Test
     public void test_iterate() {
         VersionToken token = new VersionToken(".", "5");
-        assertThat(token.iterate(), equalTo(new VersionToken(".", "6")));
+        assertThat(token.iterateValue(), equalTo(new VersionToken(".", "6")));
         token = new VersionToken(".", "value");
-        assertThat(token.iterate(), equalTo(new VersionToken(".", "value")));
+        assertThat(token.iterateValue(), equalTo(new VersionToken(".", "value")));
+    }
+
+
+    @Test
+    public void test_snapshotToken() {
+        assertThat(new VersionToken("-", "SNAPSHOT"), equalTo(SNAPSHOT_TOKEN));
+        assertThat(new VersionToken("-", "SNAPSHOT").hashCode(), equalTo(SNAPSHOT_TOKEN.hashCode()));
     }
 
 }

@@ -1,12 +1,12 @@
 package org.laruche.maven.plugins.mojo.version;
 
-import org.apache.maven.model.Model;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.laruche.maven.plugins.beans.Version;
 import org.laruche.maven.plugins.beans.algo.factory.AlgoConvert;
 import org.laruche.maven.plugins.beans.algo.factory.DefaultAlgoConverter;
-import org.laruche.maven.plugins.mojo.AbstractProjectMojo;
+import org.laruche.maven.plugins.mojo.AbstractModifyVersionMojo;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -17,7 +17,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  * @author Frédéric Moulé
  */
 @Mojo(name = "compute-version")
-public class VersionAlgoMojo extends AbstractProjectMojo {
+public class VersionAlgoMojo extends AbstractModifyVersionMojo {
     private AlgoConvert factory = new DefaultAlgoConverter();
 
     @Parameter(property = "algo", readonly = false, required = true)
@@ -27,28 +27,25 @@ public class VersionAlgoMojo extends AbstractProjectMojo {
     private String limit;
 
     @Override
-    protected void modifyPom(final Model projectModel, final Object... parameters) throws Exception {
+    protected void modifyPom(final MavenProject project) throws Exception {
         if (isEmpty(limit)) {
             throw new Exception("La limite des numéros est nul !!");
         }
-        if (parameters == null || parameters.length == 0) {
-            return;
-        }
         final String oldVersion;
-        if (!isEmpty(projectModel.getVersion())) {
-            oldVersion = projectModel.getVersion();
-        } else if (projectModel.getParent() != null && !isEmpty(projectModel.getParent().getVersion())) {
-            oldVersion = projectModel.getParent().getVersion();
+        if (!isEmpty(project.getVersion())) {
+            oldVersion = project.getVersion();
+        } else if (project.getParent() != null && !isEmpty(project.getParent().getVersion())) {
+            oldVersion = project.getParent().getVersion();
         } else {
             oldVersion = "";
         }
         final Version newVersion = factory.createAlgorithme(command).compute(new Version(oldVersion));
         this.getLog().info("Changement de version " + oldVersion + " => " + newVersion);
-        if (!isEmpty(projectModel.getVersion())) {
-            projectModel.setVersion(newVersion.toString());
+        if (!isEmpty(project.getVersion())) {
+            project.setVersion(newVersion.toString());
         }
-        if (projectModel.getParent() != null) {
-            projectModel.getParent().setVersion(newVersion.toString());
+        if (project.getParent() != null) {
+            project.getParent().setVersion(newVersion.toString());
         }
     }
 
